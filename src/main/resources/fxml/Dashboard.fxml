@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.DashboardController">
+    <top><Label text="Dashboard" style="-fx-font-size:18; -fx-padding:16;"/></top>
+    <center>
+        <HBox spacing="20" style="-fx-padding:20;">
+            <PieChart fx:id="chartOcupacion" title="Ocupación"/>
+            <BarChart fx:id="chartIngresos">
+                <xAxis><CategoryAxis label="Mes"/></xAxis>
+                <yAxis><NumberAxis label="Ingresos"/></yAxis>
+            </BarChart>
+        </HBox>
+    </center>
+</BorderPane>

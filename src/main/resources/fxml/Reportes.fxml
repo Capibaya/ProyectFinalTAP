@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.ReporteController"
+      spacing="16" style="-fx-padding:40;">
+    <Label text="Reportes" style="-fx-font-size:18;"/>
+    <Button text="Exportar PDF"   onAction="#onExportarPDF"   maxWidth="Infinity"/>
+    <Button text="Exportar Excel" onAction="#onExportarExcel" maxWidth="Infinity"/>
+</VBox>

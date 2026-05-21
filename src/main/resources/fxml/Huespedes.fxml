@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.HuespedController">
+    <top><Label text="Gestión de Huéspedes" style="-fx-font-size:18; -fx-padding:16;"/></top>
+    <center><TableView fx:id="tablaHuespedes" prefHeight="400"/></center>
+    <bottom>
+        <HBox spacing="10" style="-fx-padding:12;">
+            <TextField fx:id="txtNombre" promptText="Nombre"/>
+            <TextField fx:id="txtApellidos" promptText="Apellidos"/>
+            <TextField fx:id="txtEmail" promptText="Email"/>
+            <TextField fx:id="txtTelefono" promptText="Teléfono"/>
+            <Button text="Guardar" onAction="#onGuardar"/>
+            <Button text="Eliminar" onAction="#onEliminar"/>
+        </HBox>
+    </bottom>
+</BorderPane>

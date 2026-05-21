@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.HabitacionController">
+    <top><Label text="Gestión de Habitaciones" style="-fx-font-size:18; -fx-padding:16;"/></top>
+    <center><TableView fx:id="tablaHabitaciones" prefHeight="400"/></center>
+    <bottom>
+        <HBox spacing="10" style="-fx-padding:12;">
+            <ComboBox fx:id="cmbEstado" promptText="Nuevo estado"/>
+            <Button text="Cambiar estado" onAction="#onCambiarEstado"/>
+        </HBox>
+    </bottom>
+</BorderPane>

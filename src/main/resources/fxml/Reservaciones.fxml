@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.ReservacionController">
+    <top><Label text="Reservaciones" style="-fx-font-size:18; -fx-padding:16;"/></top>
+    <center><TableView fx:id="tablaReservaciones" prefHeight="400"/></center>
+    <bottom>
+        <HBox spacing="10" style="-fx-padding:12;">
+            <DatePicker fx:id="dpEntrada" promptText="Entrada"/>
+            <DatePicker fx:id="dpSalida" promptText="Salida"/>
+            <Button text="Guardar" onAction="#onGuardar"/>
+        </HBox>
+    </bottom>
+</BorderPane>
