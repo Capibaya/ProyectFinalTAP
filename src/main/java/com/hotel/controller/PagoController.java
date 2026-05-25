@@ -1,18 +1,15 @@
 package com.hotel.controller;
 
-import com.hotel.DAO.PagoDAO;
-import com.hotel.DAO.ReservacionDAO;
+import com.hotel.dao.PagoDAO;
+import com.hotel.dao.ReservacionDAO;
 import com.hotel.model.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.time.LocalDateTime;

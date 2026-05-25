@@ -1,4 +1,4 @@
-package com.hotel.DAO;
+package com.hotel.dao;
 
 import com.hotel.model.*;
 import com.hotel.util.DatabaseConnection;
