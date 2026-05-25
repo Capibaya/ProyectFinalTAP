@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.HabitacionController">
-    <top><Label text="Gestión de Habitaciones" style="-fx-font-size:18; -fx-padding:16;"/></top>
-    <center><TableView fx:id="tablaHabitaciones" prefHeight="400"/></center>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hotel.controller.HabitacionController">
+
+    <top>
+        <HBox spacing="12" style="-fx-padding: 14 16; -fx-background-color: #263238;">
+            <Label text="🛏️ Gestión de Habitaciones"
+                   style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tablaHabitaciones" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="colNumero" text="Número"      prefWidth="90"/>
+                <TableColumn fx:id="colPiso"   text="Piso"        prefWidth="70"/>
+                <TableColumn fx:id="colTipo"   text="Tipo"        prefWidth="150"/>
+                <TableColumn fx:id="colPrecio" text="Precio/Noche" prefWidth="120"/>
+                <TableColumn fx:id="colEstado" text="Estado"      prefWidth="120"/>
+            </columns>
+            <placeholder>
+                <Label text="No hay habitaciones registradas."/>
+            </placeholder>
+        </TableView>
+    </center>
+
     <bottom>
-        <HBox spacing="10" style="-fx-padding:12;">
-            <ComboBox fx:id="cmbEstado" promptText="Nuevo estado"/>
-            <Button text="Cambiar estado" onAction="#onCambiarEstado"/>
+        <HBox spacing="10" style="-fx-padding: 12; -fx-background-color: #ECEFF1; -fx-alignment: CENTER-LEFT;">
+            <ComboBox fx:id="cmbFiltroEstado" promptText="Filtrar por estado"/>
+            <Button text="Filtrar"        onAction="#handleFiltrar"/>
+            <!-- fx:id para controlar visibilidad según rol -->
+            <Button fx:id="btnNueva"         text="+ Nueva"         onAction="#handleNueva"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+            <Button fx:id="btnCambiarEstado" text="Cambiar Estado"  onAction="#handleCambiarEstado"
+                    style="-fx-background-color: #FF9800; -fx-text-fill: white;"/>
+            <Button fx:id="btnEliminar"      text="Eliminar"        onAction="#handleEliminar"
+                    style="-fx-background-color: #F44336; -fx-text-fill: white;"/>
         </HBox>
     </bottom>
+
 </BorderPane>
