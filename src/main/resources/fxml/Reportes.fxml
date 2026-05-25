@@ -1,9 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.ReporteController"
-      spacing="16" style="-fx-padding:40;">
-    <Label text="Reportes" style="-fx-font-size:18;"/>
-    <Button text="Exportar PDF"   onAction="#onExportarPDF"   maxWidth="Infinity"/>
-    <Button text="Exportar Excel" onAction="#onExportarExcel" maxWidth="Infinity"/>
-</VBox>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hotel.controller.ReporteController">
+
+    <top>
+        <HBox spacing="12" style="-fx-padding: 16; -fx-background-color: #263238;">
+            <Label text="Reportes"
+                   style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tablaReporte" prefHeight="380">
+            <columns>
+                <TableColumn fx:id="colFecha"      text="Fecha"      prefWidth="120"/>
+                <TableColumn fx:id="colHabitacion" text="Habitación" prefWidth="100"/>
+                <TableColumn fx:id="colCliente"    text="Cliente"    prefWidth="160"/>
+                <TableColumn fx:id="colTotal"      text="Total"      prefWidth="100"/>
+                <TableColumn fx:id="colEstado"     text="Estado"     prefWidth="110"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <VBox spacing="8" style="-fx-padding: 12; -fx-background-color: #ECEFF1;">
+            <HBox spacing="10">
+                <DatePicker fx:id="dpDesde" promptText="Desde"/>
+                <DatePicker fx:id="dpHasta" promptText="Hasta"/>
+                <ComboBox fx:id="cmbTipoReporte" promptText="Tipo de reporte"/>
+                <Button text="Filtrar"   onAction="#handleFiltrar"/>
+                <Button text="Generar"   onAction="#handleGenerarReporte"/>
+            </HBox>
+            <Label fx:id="lblEstado" text=""
+                   style="-fx-text-fill: #555;"/>
+        </VBox>
+    </bottom>
+</BorderPane>
