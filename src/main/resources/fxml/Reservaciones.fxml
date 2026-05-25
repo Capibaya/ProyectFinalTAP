@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.ReservacionController">
-    <top><Label text="Reservaciones" style="-fx-font-size:18; -fx-padding:16;"/></top>
-    <center><TableView fx:id="tablaReservaciones" prefHeight="400"/></center>
-    <bottom>
-        <HBox spacing="10" style="-fx-padding:12;">
-            <DatePicker fx:id="dpEntrada" promptText="Entrada"/>
-            <DatePicker fx:id="dpSalida" promptText="Salida"/>
-            <Button text="Guardar" onAction="#onGuardar"/>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hotel.controller.ReservacionController">
+
+    <top>
+        <HBox spacing="12" style="-fx-padding: 16; -fx-background-color: #263238;">
+            <Label text="Reservaciones"
+                   style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;"/>
         </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tablaReservaciones" prefHeight="380">
+            <columns>
+                <TableColumn fx:id="colCliente"    text="Cliente"   prefWidth="160"/>
+                <TableColumn fx:id="colHabitacion" text="Habitación" prefWidth="100"/>
+                <TableColumn fx:id="colEntrada"    text="Entrada"   prefWidth="110"/>
+                <TableColumn fx:id="colSalida"     text="Salida"    prefWidth="110"/>
+                <TableColumn fx:id="colTotal"      text="Total"     prefWidth="100"/>
+                <TableColumn fx:id="colEstado"     text="Estado"    prefWidth="110"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <VBox spacing="8" style="-fx-padding: 12; -fx-background-color: #ECEFF1;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <DatePicker fx:id="dpEntrada" promptText="Fecha entrada"/>
+                <DatePicker fx:id="dpSalida"  promptText="Fecha salida"/>
+                <ComboBox fx:id="cmbTemporada" promptText="Temporada"/>
+                <CheckBox fx:id="chkDesayuno" text="🍳 Desayuno ($180)" selected="true"/>
+                <CheckBox fx:id="chkEstacionamiento" text="🚗 Estacionamiento ($120)" selected="false"/>
+                <CheckBox fx:id="chkSpa" text="💆 Spa ($500)" selected="false"/>
+                <Button text="Calcular Total" onAction="#handleCalcular"/>
+            </HBox>
+            <HBox spacing="10">
+                <Label fx:id="lblTotal" text="Total: $0.00"
+                       style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <Button text="Nueva Reservación" onAction="#handleNueva"/>
+                <Button text="Cancelar"          onAction="#handleCancelar"/>
+            </HBox>
+        </VBox>
     </bottom>
 </BorderPane>

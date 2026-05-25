@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.hotel.controller.LoginController"
+      alignment="CENTER" spacing="15"
+      style="-fx-background-color: #1e2130; -fx-padding: 60;">
+
+    <Label text=" Hotel Reservaciones"
+           style="-fx-text-fill: white; -fx-font-size: 24; -fx-font-weight: bold;"/>
+
+    <Label text="Iniciar Sesión"
+           style="-fx-text-fill: #aaaaaa; -fx-font-size: 14;"/>
+
+    <TextField fx:id="txtUsuario" promptText="Usuario"
+               maxWidth="300"
+               style="-fx-background-color: #2a2f45; -fx-text-fill: white; -fx-padding: 10;"/>
+
+    <PasswordField fx:id="txtPassword" promptText="Contraseña"
+                   maxWidth="300"
+                   style="-fx-background-color: #2a2f45; -fx-text-fill: white; -fx-padding: 10;"/>
+
+    <Label fx:id="lblError"
+           style="-fx-text-fill: #ff4444; -fx-font-size: 12;"/>
+
+    <Button fx:id="btnLogin" text="Entrar"
+            onAction="#handleLogin"
+            maxWidth="300"
+            style="-fx-background-color: #7c3aed; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10; -fx-cursor: hand;"/>
+
+</VBox>

@@ -2,15 +2,65 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.DashboardController">
-    <top><Label text="Dashboard" style="-fx-font-size:18; -fx-padding:16;"/></top>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hotel.controller.DashboardController"
+            style="-fx-background-color: #0f1117;">
+
+    <!-- MENU LATERAL -->
+    <left>
+        <VBox spacing="5" style="-fx-background-color: #1e2130; -fx-padding: 20; -fx-min-width: 180;">
+            <Label text=" Hotel" style="-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;"/>
+            <Separator/>
+            <Button text="Dashboard"    onAction="#irDashboard"    maxWidth="Infinity" style="-fx-background-color: #7c3aed; -fx-text-fill: white;"/>
+            <Button text=" Clientes"     onAction="#irClientes"     maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
+            <Button text=" Habitaciones" onAction="#irHabitaciones" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
+            <Button text=" Reservaciones" onAction="#irReservaciones" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
+            <Button text=" Reportes"     onAction="#irReportes"     maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white;"/>
+        </VBox>
+    </left>
+
+    <!-- CONTENIDO -->
     <center>
-        <HBox spacing="20" style="-fx-padding:20;">
-            <PieChart fx:id="chartOcupacion" title="Ocupación"/>
-            <BarChart fx:id="chartIngresos">
-                <xAxis><CategoryAxis label="Mes"/></xAxis>
-                <yAxis><NumberAxis label="Ingresos"/></yAxis>
-            </BarChart>
-        </HBox>
+        <VBox spacing="20" style="-fx-padding: 30;">
+
+            <Label text="Dashboard"
+                   style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+
+            <!-- INDICADORES -->
+            <HBox spacing="15">
+                <VBox style="-fx-background-color: #059669; -fx-padding: 20; -fx-min-width: 160; -fx-background-radius: 8;">
+                    <Label text="Disponibles" style="-fx-text-fill: white;"/>
+                    <Label fx:id="lblDisponibles" text="0" style="-fx-text-fill: white; -fx-font-size: 32; -fx-font-weight: bold;"/>
+                </VBox>
+                <VBox style="-fx-background-color: #d97706; -fx-padding: 20; -fx-min-width: 160; -fx-background-radius: 8;">
+                    <Label text="Ocupadas" style="-fx-text-fill: white;"/>
+                    <Label fx:id="lblOcupadas" text="0" style="-fx-text-fill: white; -fx-font-size: 32; -fx-font-weight: bold;"/>
+                </VBox>
+                <VBox style="-fx-background-color: #dc2626; -fx-padding: 20; -fx-min-width: 160; -fx-background-radius: 8;">
+                    <Label text="Mantenimiento" style="-fx-text-fill: white;"/>
+                    <Label fx:id="lblMantenimiento" text="0" style="-fx-text-fill: white; -fx-font-size: 32; -fx-font-weight: bold;"/>
+                </VBox>
+                <VBox style="-fx-background-color: #0891b2; -fx-padding: 20; -fx-min-width: 160; -fx-background-radius: 8;">
+                    <Label text="Limpieza" style="-fx-text-fill: white;"/>
+                    <Label fx:id="lblLimpieza" text="0" style="-fx-text-fill: white; -fx-font-size: 32; -fx-font-weight: bold;"/>
+                </VBox>
+            </HBox>
+
+            <!-- GRAFICAS -->
+            <HBox spacing="20">
+                <PieChart fx:id="pieOcupacion" title="Ocupación"
+                          style="-fx-background-color: #1e2130;"
+                          prefWidth="350" prefHeight="300"/>
+                <BarChart fx:id="barIngresos" title="Ingresos por Mes"
+                          style="-fx-background-color: #1e2130;"
+                          prefWidth="400" prefHeight="300">
+                    <xAxis><CategoryAxis label="Mes"/></xAxis>
+                    <yAxis><NumberAxis label="Total $"/></yAxis>
+                </BarChart>
+            </HBox>
+
+        </VBox>
     </center>
+
 </BorderPane>
