@@ -84,9 +84,7 @@ El sistema permite:
 - JavaFX
 - Maven
 - MySQL
-- JDBC
-- iText PDF
-- Scene Builder
+- iText PDF (se uso para los reportes PDF)
 
 ---
 
