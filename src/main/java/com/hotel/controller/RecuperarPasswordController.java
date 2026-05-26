@@ -11,47 +11,87 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * Controlador para la pantalla de recuperación de contraseña.
- * Flujo en 2 pasos:
- *   Paso 1 — El usuario ingresa su nombre de usuario para verificar que existe.
- *   Paso 2 — Si existe, puede establecer una nueva contraseña.
+ * Controlador JavaFX para la pantalla de recuperación de contraseña.
+ * <p>
+ * Implementa un flujo de dos pasos:
+ * <ol>
+ *   <li><b>Paso 1</b> — El usuario ingresa su nombre de usuario para verificar
+ *       que existe en el sistema mediante {@link AuthService#buscarUsuario(String)}.</li>
+ *   <li><b>Paso 2</b> — Si el usuario existe, puede ingresar y confirmar una nueva
+ *       contraseña que se persiste mediante {@link AuthService#cambiarPassword(String, String)}.</li>
+ * </ol>
+ * </p>
  */
 public class RecuperarPasswordController {
 
     // ── Paso 1 ──────────────────────────────────────────────────────
+
+    /** Panel que contiene los controles del Paso 1 (verificación de usuario). */
     @FXML private VBox    pnlPaso1;
+
+    /** Campo de texto donde el usuario ingresa su nombre de usuario para ser verificado. */
     @FXML private TextField txtUsuario;
+
+    /** Etiqueta que muestra mensajes de error durante el Paso 1. */
     @FXML private Label   lblError1;
+
+    /** Botón que dispara la verificación del nombre de usuario en el Paso 1. */
     @FXML private Button  btnVerificar;
 
     // ── Paso 2 ──────────────────────────────────────────────────────
+
+    /** Panel que contiene los controles del Paso 2 (cambio de contraseña). */
     @FXML private VBox         pnlPaso2;
+
+    /** Etiqueta que muestra el nombre completo del usuario encontrado en el Paso 1. */
     @FXML private Label        lblBienvenida;
+
+    /** Campo de contraseña donde el usuario ingresa la nueva clave. */
     @FXML private PasswordField txtNueva;
+
+    /** Campo de contraseña donde el usuario confirma la nueva clave. */
     @FXML private PasswordField txtConfirmar;
+
+    /** Etiqueta que muestra mensajes de error durante el Paso 2. */
     @FXML private Label        lblError2;
+
+    /** Botón que dispara el cambio de contraseña en el Paso 2. */
     @FXML private Button       btnCambiar;
 
     // ── Paso visual (círculos numerados) ─────────────────────────────
+
+    /** Indicador visual circular del Paso 1 (cambia de color al completarse). */
     @FXML private Label lblPaso1Num;
+
+    /** Indicador visual circular del Paso 2 (se activa al avanzar al Paso 2). */
     @FXML private Label lblPaso2Num;
 
     // ── Botón volver ─────────────────────────────────────────────────
+
+    /** Botón que regresa a la pantalla de inicio de sesión. */
     @FXML private Button btnVolver;
 
     // ── Estado interno ───────────────────────────────────────────────
+
+    /** Servicio de autenticación utilizado para buscar usuarios y cambiar contraseñas. */
     private final AuthService authService = new AuthService();
+
+    /** Almacena el usuario encontrado en el Paso 1 para su uso durante el Paso 2. */
     private UsuarioSistema usuarioEncontrado;
-
-    // ────────────────────────────────────────────────────────────────
-    //  Inicialización
-    // ────────────────────────────────────────────────────────────────
-
 
     // ────────────────────────────────────────────────────────────────
     //  Paso 1 — Verificar usuario
     // ────────────────────────────────────────────────────────────────
 
+    /**
+     * Maneja el evento de clic en el botón "Verificar" (Paso 1).
+     * <p>
+     * Valida que el campo de usuario no esté vacío y delega la búsqueda a
+     * {@link AuthService#buscarUsuario(String)}. Si el usuario es encontrado,
+     * transiciona al Paso 2 mediante {@link #irAPaso2()}.
+     * En caso contrario, muestra un mensaje de error en {@link #lblError1}.
+     * </p>
+     */
     @FXML
     public void handleVerificar() {
         String usuario = txtUsuario.getText().trim();
@@ -76,6 +116,20 @@ public class RecuperarPasswordController {
     //  Paso 2 — Cambiar contraseña
     // ────────────────────────────────────────────────────────────────
 
+    /**
+     * Maneja el evento de clic en el botón "Cambiar contraseña" (Paso 2).
+     * <p>
+     * Realiza las siguientes validaciones antes de persistir la nueva clave:
+     * <ul>
+     *   <li>Ningún campo puede estar vacío.</li>
+     *   <li>La contraseña debe tener al menos 6 caracteres.</li>
+     *   <li>Ambos campos deben coincidir.</li>
+     * </ul>
+     * Si todas las validaciones pasan, invoca
+     * {@link AuthService#cambiarPassword(String, String)} y, en caso de éxito,
+     * llama a {@link #mostrarExito()} para informar al usuario y regresar al login.
+     * </p>
+     */
     @FXML
     public void handleCambiarPassword() {
         String nueva     = txtNueva.getText();
@@ -111,6 +165,14 @@ public class RecuperarPasswordController {
     //  Volver al Login
     // ────────────────────────────────────────────────────────────────
 
+    /**
+     * Maneja el evento de clic en el botón "Volver".
+     * <p>
+     * Carga la vista {@code Login.fxml} y la establece como escena actual,
+     * restaurando las dimensiones y el título propios de la pantalla de login.
+     * Si ocurre algún error durante la carga, imprime la traza de excepción.
+     * </p>
+     */
     @FXML
     public void handleVolver() {
         try {
@@ -136,7 +198,14 @@ public class RecuperarPasswordController {
     //  Helpers de UI
     // ────────────────────────────────────────────────────────────────
 
-    /** Transición de Paso 1 → Paso 2 */
+    /**
+     * Realiza la transición visual del Paso 1 al Paso 2.
+     * <p>
+     * Oculta el panel del Paso 1, marca el indicador circular del Paso 1 en verde
+     * (completado) y activa el del Paso 2 en azul (en progreso). También
+     * personaliza la etiqueta de bienvenida con el nombre completo del usuario.
+     * </p>
+     */
     private void irAPaso2() {
         // Ocultar paso 1
         pnlPaso1.setVisible(false);
@@ -164,7 +233,11 @@ public class RecuperarPasswordController {
         pnlPaso2.setManaged(true);
     }
 
-    /** Muestra éxito y regresa al login automáticamente */
+    /**
+     * Muestra un diálogo de información indicando que la contraseña fue cambiada
+     * con éxito y, al cerrarlo, redirige automáticamente al usuario a la pantalla
+     * de inicio de sesión mediante {@link #handleVolver()}.
+     */
     private void mostrarExito() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Contraseña actualizada");
@@ -175,11 +248,23 @@ public class RecuperarPasswordController {
         handleVolver();
     }
 
+    /**
+     * Muestra un mensaje de error en la etiqueta del Paso 1 ({@link #lblError1})
+     * con estilo de texto en color rojo oscuro.
+     *
+     * @param msg Texto del mensaje de error a mostrar.
+     */
     private void mostrarError1(String msg) {
         lblError1.setText(msg);
         lblError1.setStyle("-fx-font-size: 11px; -fx-text-fill: #C62828;");
     }
 
+    /**
+     * Muestra un mensaje de error en la etiqueta del Paso 2 ({@link #lblError2})
+     * con estilo de texto en color rojo oscuro.
+     *
+     * @param msg Texto del mensaje de error a mostrar.
+     */
     private void mostrarError2(String msg) {
         lblError2.setText(msg);
         lblError2.setStyle("-fx-font-size: 11px; -fx-text-fill: #C62828;");

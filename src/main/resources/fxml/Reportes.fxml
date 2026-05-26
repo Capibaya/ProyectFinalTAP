@@ -28,9 +28,8 @@
             <HBox spacing="10">
                 <DatePicker fx:id="dpDesde" promptText="Desde"/>
                 <DatePicker fx:id="dpHasta" promptText="Hasta"/>
-                <ComboBox fx:id="cmbTipoReporte" promptText="Tipo de reporte"/>
                 <Button text="Filtrar"   onAction="#handleFiltrar"/>
-                <Button text="Generar"   onAction="#handleGenerarReporte"/>
+                <Button text="Generar PDF" onAction="#handleGenerarReporte"/>
             </HBox>
             <Label fx:id="lblEstado" text=""
                    style="-fx-text-fill: #555;"/>

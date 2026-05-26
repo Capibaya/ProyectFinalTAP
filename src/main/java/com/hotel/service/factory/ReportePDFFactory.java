@@ -20,12 +20,52 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Implementación concreta del patrón Factory para la generación de reportes en PDF.
+ * <p>
+ * Patrón de diseño: <b>Factory</b> — implementa {@link ReporteFactory} y
+ * encapsula toda la lógica de creación de documentos PDF mediante la biblioteca
+ * iText. Genera un reporte estilizado de reservaciones con encabezado, tabla
+ * de datos, fila de total general y pie de página.
+ * </p>
+ */
 public class ReportePDFFactory implements ReporteFactory {
 
+    /**
+     * Color RGB utilizado para el encabezado de la tabla y del título del reporte (#263238).
+     */
     private static final DeviceRgb COLOR_ENCABEZADO  = new DeviceRgb(38, 50, 56);   // #263238
+
+    /**
+     * Color RGB utilizado para las filas pares de datos de la tabla (#ECEFF1).
+     */
     private static final DeviceRgb COLOR_FILA_PAR    = new DeviceRgb(236, 239, 241); // #ECEFF1
+
+    /**
+     * Color RGB utilizado para la fila del total general al pie de la tabla (#4CAF50).
+     */
     private static final DeviceRgb COLOR_TOTAL_FILA  = new DeviceRgb(76, 175, 80);   // #4CAF50
 
+    /**
+     * Genera un reporte PDF de reservaciones hoteleras con diseño estilizado.
+     * <p>
+     * El documento incluye:
+     * <ul>
+     *   <li>Encabezado con título y fecha de generación.</li>
+     *   <li>Tabla con columnas: ID, Cliente, Habitación, Fecha entrada,
+     *       Fecha salida, Huéspedes, Total y Estado.</li>
+     *   <li>Fila de total general al final de la tabla.</li>
+     *   <li>Pie de página automático.</li>
+     * </ul>
+     * Los elementos de la lista {@code datos} que no sean instancias de
+     * {@link Reservacion} son ignorados silenciosamente.
+     * </p>
+     *
+     * @param datos       lista de objetos; solo las instancias de {@link Reservacion}
+     *                    son procesadas e incluidas en el reporte
+     * @param rutaDestino ruta completa del archivo PDF de salida (p. ej.
+     *                    {@code "C:/reportes/reporte.pdf"})
+     */
     @Override
     public void generarReporte(List<?> datos, String rutaDestino) {
         try {
