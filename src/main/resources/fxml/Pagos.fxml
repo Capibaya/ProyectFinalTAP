@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hotel.controller.PagoController">
+
+    <top>
+        <HBox spacing="12" style="-fx-padding: 14 16; -fx-background-color: #263238;">
+            <Label text="💳 Gestión de Pagos"
+                   style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="0">
+            <!-- Tarjetas de resumen -->
+            <HBox spacing="16" style="-fx-padding: 14 16 8 16; -fx-background-color: #F5F5F5;">
+                <VBox style="-fx-background-color: #4CAF50; -fx-padding: 12 20; -fx-background-radius: 8; -fx-min-width: 180;">
+                    <Label text="Total Ingresos" style="-fx-text-fill: white; -fx-font-size: 11;"/>
+                    <Label fx:id="lblTotalIngresos" text="0.00"
+                           style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                </VBox>
+                <VBox style="-fx-background-color: #2196F3; -fx-padding: 12 20; -fx-background-radius: 8; -fx-min-width: 140;">
+                    <Label text="Pagos Registrados" style="-fx-text-fill: white; -fx-font-size: 11;"/>
+                    <Label fx:id="lblCantPagos" text="0"
+                           style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                </VBox>
+            </HBox>
+
+            <!-- Tablas en paralelo -->
+            <HBox spacing="0" VBox.vgrow="ALWAYS">
+                <!-- Tabla de pagos -->
+                <VBox HBox.hgrow="ALWAYS" spacing="0">
+                    <Label text="Historial de Pagos"
+                           style="-fx-font-weight: bold; -fx-font-size: 13; -fx-padding: 8 16 4 16;
+                                  -fx-background-color: #ECEFF1;"/>
+                    <TableView fx:id="tablaPagos" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colIdPago"      text="#"           prefWidth="45"/>
+                            <TableColumn fx:id="colReservacion" text="Reservación" prefWidth="210"/>
+                            <TableColumn fx:id="colMetodo"      text="Método"      prefWidth="110"/>
+                            <TableColumn fx:id="colMonto"       text="Monto"       prefWidth="90"/>
+                            <TableColumn fx:id="colFechaPago"   text="Fecha Pago"  prefWidth="130"/>
+                        </columns>
+                        <placeholder><Label text="Sin pagos registrados."/></placeholder>
+                    </TableView>
+                     <HBox spacing="10" style="-fx-padding: 10; -fx-background-color: #ECEFF1;">
+                         <Button fx:id="btnRegistrarPago" text="+ Registrar Pago"  onAction="#handleNuevoPago"
+                                 style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                         <Button fx:id="btnEliminarPago" text="🗑 Eliminar Pago"  onAction="#handleEliminarPago"
+                                 style="-fx-background-color: #F44336; -fx-text-fill: white;"/>
+                     </HBox>
+                 </VBox>
+             </HBox>
+         </VBox>
+    </center>
+
+</BorderPane>

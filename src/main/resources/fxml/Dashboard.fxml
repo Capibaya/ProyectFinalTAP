@@ -1,16 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.chart.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.DashboardController">
-    <top><Label text="Dashboard" style="-fx-font-size:18; -fx-padding:16;"/></top>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hotel.controller.DashboardController">
+
+    <left>
+        <VBox spacing="6" style="-fx-padding: 20 12; -fx-background-color: #263238; -fx-min-width: 175;">
+            <Label text="HOTEL"
+                   style="-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 0 6 0;"/>
+
+            <Label fx:id="lblNombreUsuario" text="..."
+                   style="-fx-text-fill: #B0BEC5; -fx-font-size: 11; -fx-wrap-text: true;"/>
+            <Label fx:id="lblRolUsuario" text=""
+                   style="-fx-text-fill: #4CAF50; -fx-font-size: 10; -fx-font-weight: bold;
+                          -fx-background-color: #1B5E20; -fx-background-radius: 4;
+                          -fx-padding: 2 6 2 6;"/>
+
+            <Separator style="-fx-opacity: 0.3;"/>
+
+            <Button text="Dashboard"     onAction="#irDashboard"     maxWidth="Infinity"
+                    style="-fx-background-color: #37474F; -fx-text-fill: white; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+            <Button text="Clientes"      onAction="#irClientes"      maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+            <Button text="Habitaciones"  onAction="#irHabitaciones"  maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+            <Button text="Reservaciones" onAction="#irReservaciones" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+            <Button fx:id="btnPagos"    text="Pagos"    onAction="#irPagos"    maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+            <Button fx:id="btnReportes" text="Reportes" onAction="#irReportes" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+        </VBox>
+    </left>
+
     <center>
-        <HBox spacing="20" style="-fx-padding:20;">
-            <PieChart fx:id="chartOcupacion" title="Ocupación"/>
-            <BarChart fx:id="chartIngresos">
-                <xAxis><CategoryAxis label="Mes"/></xAxis>
-                <yAxis><NumberAxis label="Ingresos"/></yAxis>
-            </BarChart>
-        </HBox>
+        <StackPane fx:id="contenidoCentral">
+            <VBox spacing="16" style="-fx-padding: 24;">
+                <Label text="Dashboard"
+                       style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #263238;"/>
+
+                <HBox spacing="14">
+                    <VBox style="-fx-background-color: #4CAF50; -fx-padding: 14; -fx-min-width: 120; -fx-background-radius: 8;">
+                        <Label text="Disponibles" style="-fx-text-fill: white; -fx-font-size: 11;"/>
+                        <Label fx:id="lblDisponibles" text="0"
+                               style="-fx-text-fill: white; -fx-font-size: 30; -fx-font-weight: bold;"/>
+                    </VBox>
+                    <VBox style="-fx-background-color: #F44336; -fx-padding: 14; -fx-min-width: 120; -fx-background-radius: 8;">
+                        <Label text="Ocupadas" style="-fx-text-fill: white; -fx-font-size: 11;"/>
+                        <Label fx:id="lblOcupadas" text="0"
+                               style="-fx-text-fill: white; -fx-font-size: 30; -fx-font-weight: bold;"/>
+                    </VBox>
+                    <VBox style="-fx-background-color: #FF9800; -fx-padding: 14; -fx-min-width: 130; -fx-background-radius: 8;">
+                        <Label text="Mantenimiento" style="-fx-text-fill: white; -fx-font-size: 11;"/>
+                        <Label fx:id="lblMantenimiento" text="0"
+                               style="-fx-text-fill: white; -fx-font-size: 30; -fx-font-weight: bold;"/>
+                    </VBox>
+                    <VBox style="-fx-background-color: #2196F3; -fx-padding: 14; -fx-min-width: 120; -fx-background-radius: 8;">
+                        <Label text="Limpieza" style="-fx-text-fill: white; -fx-font-size: 11;"/>
+                        <Label fx:id="lblLimpieza" text="0"
+                               style="-fx-text-fill: white; -fx-font-size: 30; -fx-font-weight: bold;"/>
+                    </VBox>
+                    <VBox style="-fx-background-color: #7B1FA2; -fx-padding: 14; -fx-min-width: 160; -fx-background-radius: 8;">
+                        <Label text="Ganancias Totales" style="-fx-text-fill: white; -fx-font-size: 11;"/>
+                        <Label fx:id="lblTotalGanancias" text="0.00"
+                               style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="20">
+                    <PieChart fx:id="pieOcupacion" title="Ocupacion actual"
+                              prefWidth="340" prefHeight="260" animated="true"/>
+                    <BarChart fx:id="barIngresos" prefWidth="420" prefHeight="260" animated="true">
+                        <xAxis><CategoryAxis label="Mes"/></xAxis>
+                        <yAxis><NumberAxis label="Ingresos ($)"/></yAxis>
+                    </BarChart>
+                </HBox>
+            </VBox>
+        </StackPane>
     </center>
+
 </BorderPane>

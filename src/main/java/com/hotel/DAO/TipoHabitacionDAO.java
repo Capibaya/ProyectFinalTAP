@@ -1,4 +1,4 @@
-package com.hotel.DAO;
+package com.hotel.dao;
 
 import com.hotel.model.TipoHabitacion;
 import com.hotel.util.DatabaseConnection;
@@ -10,8 +10,7 @@ public class TipoHabitacionDAO implements GenericDAO<TipoHabitacion> {
             DatabaseConnection.getInstancia().getConexion();
     @Override
     public void guardar(TipoHabitacion t) {
-        String sql = "INSERT INTO tipos_habitacion (nombre, capacidad,
-        precio_noche) VALUES (?,?,?)";
+        String sql = "INSERT INTO tipos_habitacion (nombre, capacidad, precio_noche) VALUES (?,?,?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, t.getNombre());
             ps.setInt(2, t.getCapacidad());
@@ -50,8 +49,7 @@ public class TipoHabitacionDAO implements GenericDAO<TipoHabitacion> {
     }
     @Override
     public void actualizar(TipoHabitacion t) {
-        String sql = "UPDATE tipos_habitacion SET nombre=?, capacidad=?,
-        precio_noche=? WHERE id_tipo=?";
+        String sql = "UPDATE tipos_habitacion SET nombre=?, capacidad=?, precio_noche=? WHERE id_tipo=?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, t.getNombre());
             ps.setInt(2, t.getCapacidad());

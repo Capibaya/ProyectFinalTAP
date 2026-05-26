@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.hotel.controller.LoginController"
+      alignment="CENTER" spacing="16"
+      style="-fx-background-color: #1A237E; -fx-padding: 40;">
+
+    <Label text="SISTEMA HOTELERO"
+           style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+    <Separator style="-fx-background-color: #42A5F5;" prefWidth="300"/>
+
+    <VBox spacing="10" alignment="CENTER"
+          style="-fx-background-color: white; -fx-padding: 30;
+                 -fx-background-radius: 10;" maxWidth="340">
+
+        <Label text="Usuario" style="-fx-font-weight: bold; -fx-text-fill: #1A237E;"/>
+        <TextField fx:id="txtUsuario" promptText="Nombre de usuario"
+                   prefWidth="280" style="-fx-font-size: 13px;"/>
+
+        <Label text="Contraseña" style="-fx-font-weight: bold; -fx-text-fill: #1A237E;"/>
+        <PasswordField fx:id="txtPassword" promptText="Contraseña"
+                       prefWidth="280" style="-fx-font-size: 13px;"/>
+
+        <Label fx:id="lblError" text="" wrapText="true" maxWidth="280"
+               style="-fx-font-size: 11px;"/>
+
+        <Button fx:id="btnLogin" text="INICIAR SESIÓN"
+                prefWidth="280" prefHeight="38"
+                onAction="#handleLogin"
+                style="-fx-background-color: #1565C0; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-font-size: 13px;
+                       -fx-background-radius: 6;"/>
+
+        <Button fx:id="btnRecuperar" text="¿Olvidaste tu contraseña?"
+                onAction="#handleRecuperar"
+                style="-fx-background-color: transparent; -fx-text-fill: #1565C0;
+                       -fx-font-size: 11px; -fx-cursor: hand; -fx-underline: true;
+                       -fx-border-color: transparent;"/>
+    </VBox>
+</VBox>

@@ -1,4 +1,4 @@
-package com.hotel.DAO;
+package com.hotel.dao;
 
 import com.hotel.model.*;
 import com.hotel.util.DatabaseConnection;
@@ -10,8 +10,7 @@ public class UsuarioDAO implements GenericDAO<UsuarioSistema> {
             DatabaseConnection.getInstancia().getConexion();
     @Override
     public void guardar(UsuarioSistema u) {
-        String sql = "INSERT INTO usuarios_sistema (id_empleado, usuario,
-        password_hash, id_rol) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO usuarios_sistema (id_empleado, usuario, password_hash, id_rol) VALUES (?,?,?,?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, u.getEmpleado().getIdEmpleado());
             ps.setString(2, u.getUsuario());
@@ -77,8 +76,7 @@ public class UsuarioDAO implements GenericDAO<UsuarioSistema> {
     }
     @Override
     public void actualizar(UsuarioSistema u) {
-        String sql = "UPDATE usuarios_sistema SET usuario=?,
-        password_hash=?, id_rol=? WHERE id_usuario=?";
+        String sql = "UPDATE usuarios_sistema SET usuario=?, password_hash=?, id_rol=? WHERE id_usuario=?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, u.getUsuario());
             ps.setString(2, u.getPasswordHash());

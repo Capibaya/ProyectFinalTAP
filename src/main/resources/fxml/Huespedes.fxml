@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hotel.controller.HuespedController">
-    <top><Label text="Gestión de Huéspedes" style="-fx-font-size:18; -fx-padding:16;"/></top>
-    <center><TableView fx:id="tablaHuespedes" prefHeight="400"/></center>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hotel.controller.HuespedController">
+
+    <top>
+        <HBox spacing="12" style="-fx-padding: 16; -fx-background-color: #263238;">
+            <Label text="Gestión de Huéspedes"
+                   style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tablaClientes" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="colNombre"   text="Nombre"   prefWidth="140"/>
+                <TableColumn fx:id="colApellido" text="Apellido" prefWidth="140"/>
+                <TableColumn fx:id="colCorreo"   text="Correo"   prefWidth="200"/>
+                <TableColumn fx:id="colTelefono" text="Teléfono" prefWidth="120"/>
+                <TableColumn fx:id="colCiudad"   text="Ciudad"   prefWidth="120"/>
+            </columns>
+        </TableView>
+    </center>
+
     <bottom>
-        <HBox spacing="10" style="-fx-padding:12;">
-            <TextField fx:id="txtNombre" promptText="Nombre"/>
-            <TextField fx:id="txtApellidos" promptText="Apellidos"/>
-            <TextField fx:id="txtEmail" promptText="Email"/>
-            <TextField fx:id="txtTelefono" promptText="Teléfono"/>
-            <Button text="Guardar" onAction="#onGuardar"/>
-            <Button text="Eliminar" onAction="#onEliminar"/>
+        <HBox spacing="10" style="-fx-padding: 12; -fx-background-color: #ECEFF1;">
+            <TextField fx:id="txtBuscar" promptText="Buscar cliente..." prefWidth="220"/>
+            <Button text="Buscar"   onAction="#handleBuscar"/>
+            <Button text="Nuevo"    onAction="#handleNuevo"/>
+            <Button text="Editar"   onAction="#handleEditar"/>
+            <Button text="Eliminar" onAction="#handleEliminar"/>
         </HBox>
     </bottom>
 </BorderPane>
