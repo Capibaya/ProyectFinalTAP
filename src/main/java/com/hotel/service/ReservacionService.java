@@ -1,5 +1,6 @@
 package com.hotel.service;
 
+import com.hotel.dao.HabitacionDAO;
 import com.hotel.dao.ReservacionDAO;
 import com.hotel.model.EstadoReservacion;
 import com.hotel.model.Habitacion;
@@ -27,6 +28,12 @@ import java.util.List;
  * (desayuno, parking, spa) al precio base de la reservación mediante decoradores
  * que implementan {@link ReservacionBase}.
  * </p>
+ * <p>
+ * Patrón de diseño: <b>Observer</b> — al guardar o cancelar una reservación, notifica
+ * el cambio de estado de la habitación a través de {@link HabitacionService},
+ * que a su vez dispara todos los observadores registrados
+ * (p. ej. {@link com.hotel.service.observer.DashboardObserver}).
+ * </p>
  */
 public class ReservacionService {
 
@@ -39,6 +46,27 @@ public class ReservacionService {
      * Objeto de acceso a datos para operaciones CRUD sobre reservaciones.
      */
     private final ReservacionDAO dao = new ReservacionDAO();
+
+    /**
+     * DAO de habitaciones, usado para recargar la habitación completa antes de
+     * devolverla a "disponible" al cancelar (necesita tipo para poder actualizarse en BD).
+     */
+    private final HabitacionDAO habitacionDAO = new HabitacionDAO();
+
+    /**
+     * Servicio de habitaciones inyectado para integrar el patrón Observer.
+     * Se invoca cada vez que una reservación cambia el estado de la habitación asociada.
+     */
+    private final HabitacionService habitacionService;
+
+    /**
+     * Constructor que recibe el {@link HabitacionService} para integrar el patrón Observer.
+     *
+     * @param habitacionService servicio de habitaciones ya instanciado (con sus observadores)
+     */
+    public ReservacionService(HabitacionService habitacionService) {
+        this.habitacionService = habitacionService;
+    }
 
     /**
      * Obtiene la lista completa de reservaciones registradas en el sistema.
@@ -116,16 +144,26 @@ public class ReservacionService {
     }
 
     /**
-     * Persiste una nueva reservación en la base de datos.
+     * Persiste una nueva reservación en la base de datos y, a través del patrón
+     * <b>Observer</b>, marca la habitación como <b>"ocupada"</b> notificando
+     * automáticamente a todos los observadores registrados.
      *
      * @param r el objeto {@link Reservacion} con todos los datos a guardar.
      */
     public void guardar(Reservacion r) {
         dao.guardar(r);
+
+        // Patrón Observer: al crear la reservación, la habitación pasa a "ocupada"
+        Habitacion hab = r.getHabitacion();
+        if (hab != null) {
+            habitacionService.cambiarEstado(hab, "ocupada", null);
+        }
     }
 
     /**
-     * Cancela una reservación existente cambiando su estado a {@code "cancelada"} (id=5).
+     * Cancela una reservación existente cambiando su estado a "cancelada" (buscado
+     * dinámicamente en la BD) y, a través del patrón <b>Observer</b>, devuelve
+     * la habitación a estado <b>"disponible"</b>.
      * <p>
      * Si la reservación no existe en la base de datos, el método no realiza ninguna acción.
      * </p>
@@ -134,10 +172,27 @@ public class ReservacionService {
      */
     public void cancelar(int idReservacion) {
         Reservacion r = dao.buscarPorId(idReservacion);
-        if (r != null) {
-            EstadoReservacion cancelada = new EstadoReservacion(5, "cancelada");
-            r.setEstadoReservacion(cancelada);
-            dao.actualizar(r);
+        if (r == null) return;
+
+        // Obtener id del estado "cancelada" dinámicamente desde la BD (sin hardcode)
+        int idCancelada = dao.buscarIdEstadoReservacionPorNombre("cancelada");
+        if (idCancelada < 0) {
+            System.err.println("Estado 'cancelada' no encontrado en estados_reservacion. Abortando.");
+            return;
+        }
+
+        r.setEstadoReservacion(new EstadoReservacion(idCancelada, "cancelada"));
+        dao.actualizar(r);
+
+        // Patrón Observer: al cancelar, la habitación vuelve a "disponible"
+        // Se recarga la habitación completa (con TipoHabitacion) porque el mapeo
+        // básico del ReservacionDAO no incluye todos los campos necesarios para actualizar
+        Habitacion hab = r.getHabitacion();
+        if (hab != null) {
+            Habitacion habCompleta = habitacionDAO.buscarPorId(hab.getIdHabitacion());
+            if (habCompleta != null) {
+                habitacionService.cambiarEstado(habCompleta, "disponible", null);
+            }
         }
     }
 }

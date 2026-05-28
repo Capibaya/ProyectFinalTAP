@@ -98,6 +98,24 @@ public class ReservacionDAO implements GenericDAO<Reservacion> {
         }
     }
 
+    /**
+     * Busca el id del estado de reservación dado su nombre (p. ej. "cancelada", "confirmada").
+     *
+     * @param nombre nombre del estado a buscar
+     * @return id del estado encontrado, o -1 si no existe
+     */
+    public int buscarIdEstadoReservacionPorNombre(String nombre) {
+        String sql = "SELECT id_estado_reservacion FROM estados_reservacion WHERE nombre=?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            System.err.println("Error al buscar id de estado reservacion: " + e.getMessage());
+        }
+        return -1;
+    }
+
     private Reservacion mapear(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();
         c.setIdCliente(rs.getInt("id_cliente"));

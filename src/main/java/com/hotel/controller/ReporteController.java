@@ -2,6 +2,7 @@ package com.hotel.controller;
 
 import com.hotel.model.Reservacion;
 import com.hotel.model.UsuarioSistema;
+import com.hotel.service.HabitacionService;
 import com.hotel.service.ReservacionService;
 import com.hotel.service.factory.ReporteFactory;
 import com.hotel.service.factory.ReportePDFFactory;
@@ -59,7 +60,8 @@ public class ReporteController implements Initializable {
     @FXML private Label lblEstado;
 
     /** Servicio de negocio utilizado para obtener y filtrar reservaciones. */
-    private final ReservacionService reservacionService = new ReservacionService();
+    private final ReservacionService reservacionService =
+            new ReservacionService(new HabitacionService());
 
     /** Usuario del sistema autenticado actualmente, inyectado desde el Dashboard. */
     private UsuarioSistema usuarioActual;

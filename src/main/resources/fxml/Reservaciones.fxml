@@ -30,9 +30,9 @@
                 <DatePicker fx:id="dpEntrada" promptText="Fecha entrada"/>
                 <DatePicker fx:id="dpSalida"  promptText="Fecha salida"/>
                 <ComboBox fx:id="cmbTemporada" promptText="Temporada"/>
-                <CheckBox fx:id="chkDesayuno" text="🍳 Desayuno ($180)" selected="true"/>
-                <CheckBox fx:id="chkEstacionamiento" text="🚗 Estacionamiento ($120)" selected="false"/>
-                <CheckBox fx:id="chkSpa" text="💆 Spa ($500)" selected="false"/>
+                <CheckBox fx:id="chkDesayuno" text=" Desayuno ($180)" selected="true"/>
+                <CheckBox fx:id="chkEstacionamiento" text=" Estacionamiento ($120)" selected="false"/>
+                <CheckBox fx:id="chkSpa" text=" Spa ($500)" selected="false"/>
                 <Button text="Calcular Total" onAction="#handleCalcular"/>
             </HBox>
             <HBox spacing="10">

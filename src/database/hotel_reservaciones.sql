@@ -154,6 +154,24 @@ create table metodos_pago (
                               nombre varchar(50) unique not null
 );
 
+create table historial_estado_habitacion (
+                                             id_historial int auto_increment primary key,
+                                             id_habitacion int not null,
+                                             id_estado_anterior int not null,
+                                             id_estado_nuevo int not null,
+                                             id_empleado int,
+                                             fecha_cambio datetime not null,
+                                             motivo varchar(255),
+                                             foreign key (id_habitacion) references habitaciones(id_habitacion)
+                                                 on delete cascade,
+                                             foreign key (id_estado_anterior) references estados_habitacion(id_estado_habitacion)
+                                                 on delete restrict,
+                                             foreign key (id_estado_nuevo) references estados_habitacion(id_estado_habitacion)
+                                                 on delete restrict,
+                                             foreign key (id_empleado) references empleados(id_empleado)
+                                                 on delete set null
+);
+
 create table pagos (
                        id_pago int auto_increment primary key,
                        id_reservacion int not null,
@@ -165,3 +183,78 @@ create table pagos (
                        foreign key (id_metodo_pago) references metodos_pago(id_metodo_pago)
                            on delete restrict
 );
+
+-- ═══════════════════════════════════════════════════════════════════════
+-- DATOS INICIALES (SEED DATA)
+-- ═══════════════════════════════════════════════════════════════════════
+
+-- Roles del sistema
+insert into roles (nombre_rol) values
+('Administrador'),
+('Recepcionista'),
+('Limpieza'),
+('Mantenimiento');
+
+-- Puestos de trabajo
+insert into puestos (nombre_puesto, descripcion) values
+('Recepcionista',   'Atención al cliente y gestión de check-in/check-out'),
+('Gerente',         'Administración general del hotel'),
+('Camarero/a',      'Limpieza y mantenimiento de habitaciones'),
+('Chef',            'Preparación de alimentos en el restaurante'),
+('Técnico',         'Mantenimiento de instalaciones y equipos');
+
+-- Servicios adicionales del hotel
+insert into servicios (nombre, precio, descripcion) values
+('Desayuno',          180.00, 'Desayuno buffet incluido para todos los huéspedes'),
+('Estacionamiento',   120.00, 'Uso del estacionamiento privado del hotel por día'),
+('Spa',               500.00, 'Acceso completo al área de spa y relajación'),
+('Lavandería',        150.00, 'Servicio de lavado y planchado de ropa'),
+('Room Service',      200.00, 'Servicio de alimentos a la habitación disponible 24h'),
+('Internet Premium',   80.00, 'Acceso a internet de alta velocidad en la habitación');
+
+-- Métodos de pago
+insert into metodos_pago (nombre) values
+('Efectivo'),
+('Tarjeta de Crédito'),
+('Tarjeta de Débito'),
+('Transferencia Bancaria');
+
+-- Estados de habitación base
+insert into estados_habitacion (nombre) values
+('disponible'),
+('ocupada'),
+('mantenimiento'),
+('limpieza');
+
+-- Estados de reservación base
+insert into estados_reservacion (nombre) values
+('pendiente'),
+('confirmada'),
+('en curso'),
+('completada'),
+('cancelada');
+
+-- Tipos de habitación base
+insert into tipos_habitacion (nombre, capacidad, precio_noche) values
+('Sencilla',   1, 800.00),
+('Doble',      2, 1200.00),
+('Suite',      4, 2500.00),
+('Familiar',   6, 1800.00);
+
+-- Empleados de ejemplo
+insert into empleados (nombre, apellido, id_puesto, salario, turno, fecha_contratacion) values
+('Carlos',    'González',  2, 25000.00, 'Matutino',   '2022-01-15'),
+('Ana',       'Martínez',  1, 12000.00, 'Matutino',   '2023-03-10'),
+('Luis',      'Ramírez',   3, 10000.00, 'Vespertino', '2023-06-01'),
+('Sofía',     'López',     5, 11000.00, 'Matutino',   '2024-01-20');
+
+-- Usuarios del sistema (contraseñas SHA-256)
+-- admin123  → 240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a
+-- hotel123  → 2b4da0b6dca4d1c33fa48eadac28085f07c11a1bca5a8c28c0ada27d04a0cc9
+-- limp123   → 8f4ca6b2f5b74a3dac11b49cf2c7640f24e01d6c93c8e32399c2dda07073978d
+-- mant123   → d26c5f81bb24ce4c9ef81f66e96addc77e26459bc1a8bd2a35a2c3cf9e97bb06
+insert into usuarios_sistema (id_empleado, usuario, password_hash, id_rol) values
+(1, 'admin',     '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a', 1),
+(2, 'recepcion', '2b4da0b6dca4d1c33fa48eadac28085f07c11a1bca5a8c28c0ada27d04a0cc9', 2),
+(3, 'limpieza',  '8f4ca6b2f5b74a3dac11b49cf2c7640f24e01d6c93c8e32399c2dda07073978d', 3),
+(4, 'manto',     'd26c5f81bb24ce4c9ef81f66e96addc77e26459bc1a8bd2a35a2c3cf9e97bb06', 4);

@@ -21,16 +21,29 @@
 
             <Button text="Dashboard"     onAction="#irDashboard"     maxWidth="Infinity"
                     style="-fx-background-color: #37474F; -fx-text-fill: white; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
-            <Button text="Clientes"      onAction="#irClientes"      maxWidth="Infinity"
+            <Button fx:id="btnClientes"      text="Clientes"      onAction="#irClientes"      maxWidth="Infinity"
                     style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
-            <Button text="Habitaciones"  onAction="#irHabitaciones"  maxWidth="Infinity"
+            <Button fx:id="btnHabitaciones"  text="Habitaciones"  onAction="#irHabitaciones"  maxWidth="Infinity"
                     style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
-            <Button text="Reservaciones" onAction="#irReservaciones" maxWidth="Infinity"
+            <Button fx:id="btnReservaciones" text="Reservaciones" onAction="#irReservaciones" maxWidth="Infinity"
                     style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
-            <Button fx:id="btnPagos"    text="Pagos"    onAction="#irPagos"    maxWidth="Infinity"
+            <Button fx:id="btnPagos"         text="Pagos"         onAction="#irPagos"         maxWidth="Infinity"
                     style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
-            <Button fx:id="btnReportes" text="Reportes" onAction="#irReportes" maxWidth="Infinity"
+            <Button fx:id="btnEmpleados"     text="Empleados"     onAction="#irEmpleados"     maxWidth="Infinity"
                     style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+            <Button fx:id="btnServicios"     text="Servicios"     onAction="#irServicios"     maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+            <Button fx:id="btnConsumos"      text="Consumos"      onAction="#irConsumos"      maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+            <Button fx:id="btnReportes"      text="Reportes"      onAction="#irReportes"      maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #CFD8DC; -fx-alignment: CENTER-LEFT; -fx-padding: 8 10;"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Separator style="-fx-opacity: 0.3;"/>
+            <Button text="🚪 Cerrar Sesión" onAction="#cerrarSesion" maxWidth="Infinity"
+                    style="-fx-background-color: #C62828; -fx-text-fill: white; -fx-font-weight: bold;
+                           -fx-alignment: CENTER-LEFT; -fx-padding: 8 10; -fx-background-radius: 4;"/>
         </VBox>
     </left>
 

@@ -3,6 +3,7 @@ package com.hotel.controller;
 import com.hotel.dao.ClienteDAO;
 import com.hotel.dao.HabitacionDAO;
 import com.hotel.model.*;
+import com.hotel.service.HabitacionService;
 import com.hotel.service.ReservacionService;
 import com.hotel.service.decorator.ReservacionBase;
 import javafx.beans.property.SimpleStringProperty;
@@ -38,7 +39,10 @@ public class ReservacionController implements Initializable {
     @FXML private CheckBox     chkSpa;
     @FXML private Label        lblTotal;
 
-    private final ReservacionService reservacionService = new ReservacionService();
+    // HabitacionService compartido: contiene los observadores registrados (DashboardObserver, etc.)
+    private final HabitacionService habitacionService = new HabitacionService();
+    // ReservacionService recibe HabitacionService para poder disparar el Observer al reservar/cancelar
+    private final ReservacionService reservacionService = new ReservacionService(habitacionService);
     private final ClienteDAO    clienteDAO    = new ClienteDAO();
     private final HabitacionDAO habitacionDAO = new HabitacionDAO();
 
@@ -149,7 +153,8 @@ public class ReservacionController implements Initializable {
         grid.setPadding(new Insets(20, 40, 10, 20));
 
         List<Cliente>    clientes    = clienteDAO.obtenerTodos();
-        List<Habitacion> habitaciones = habitacionDAO.obtenerTodos();
+        // Solo mostrar habitaciones disponibles para evitar reservar habitaciones ya ocupadas
+        List<Habitacion> habitaciones = habitacionDAO.obtenerPorEstado("disponible");
 
         ComboBox<Cliente>    cmbCliente    = new ComboBox<>(FXCollections.observableArrayList(clientes));
         ComboBox<Habitacion> cmbHabitacion = new ComboBox<>(FXCollections.observableArrayList(habitaciones));

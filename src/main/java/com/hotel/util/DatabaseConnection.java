@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class DatabaseConnection {
 
     // Datos de conexion
-    private static final String URL      = "jdbc:mysql://localhost:3306/hotel_reservaciones?useSSL=false&serverTimezone=America/Mexico_City";
+    private static final String URL      = "jdbc:mysql://localhost:3306/hotel_reservaciones?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Mexico_City";
     private static final String USER     = "root";
     private static final String PASSWORD = "Waldo2402";
 

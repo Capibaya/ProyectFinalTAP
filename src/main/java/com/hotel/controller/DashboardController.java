@@ -7,10 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.Map;
@@ -27,11 +29,19 @@ public class DashboardController implements Initializable {
     @FXML private BarChart<String, Number> barIngresos;
     @FXML private StackPane contenidoCentral;
 
-    // Barra lateral
+    // Sidebar labels
     @FXML private Label  lblNombreUsuario;
     @FXML private Label  lblRolUsuario;
-    @FXML private Button btnReportes;
+
+    // Botones del sidebar (para mostrar/ocultar según rol)
+    @FXML private Button btnClientes;
+    @FXML private Button btnHabitaciones;
+    @FXML private Button btnReservaciones;
     @FXML private Button btnPagos;
+    @FXML private Button btnEmpleados;
+    @FXML private Button btnServicios;
+    @FXML private Button btnConsumos;
+    @FXML private Button btnReportes;
 
     private final HabitacionService habitacionService = new HabitacionService();
     private final PagoDAO           pagoDAO           = new PagoDAO();
@@ -92,9 +102,8 @@ public class DashboardController implements Initializable {
         series.setName("Ingresos " + java.time.Year.now().getValue());
         Map<String, Double> ingresos = habitacionService.obtenerIngresosPorMes();
         if (ingresos.isEmpty()) {
-            // Mostrar meses vacíos como referencia visual
-            for (String m : new String[]{"Ene", "Feb", "Mar", "Abr", "May", "Jun",
-                                         "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"}) {
+            for (String m : new String[]{"Ene","Feb","Mar","Abr","May","Jun",
+                                         "Jul","Ago","Sep","Oct","Nov","Dic"}) {
                 series.getData().add(new XYChart.Data<>(m, 0));
             }
         } else {
@@ -104,36 +113,51 @@ public class DashboardController implements Initializable {
         barIngresos.getData().add(series);
     }
 
-    // ─── Privilegios ─────────────────────────────────────────────────────────
+    // ─── Privilegios por Rol ─────────────────────────────────────────────────
+
+    private int getRolId() {
+        if (usuarioActual == null || usuarioActual.getRol() == null) return -1;
+        return usuarioActual.getRol().getIdRol();
+    }
+
+    private boolean esAdmin()          { return getRolId() == 1; }
+    private boolean esRecepcionista()  { return getRolId() == 2; }
+    private boolean esLimpieza()       { return getRolId() == 3; }
+    private boolean esMantenimiento()  { return getRolId() == 4; }
 
     /**
-     * Fix: ya no compara contra el string "admin" exacto.
-     * Ahora se considera admin si el id_rol == 1, que es el estándar en la BD.
-     * Esto soluciona el bug cuando el nombre del rol es "Administrador", "Admin", etc.
+     * Aplica visibilidad del sidebar según el rol del usuario autenticado.
+     * <ul>
+     *   <li>Admin (1): ve todo</li>
+     *   <li>Recepcionista (2): ve Clientes, Habitaciones, Reservaciones, Pagos</li>
+     *   <li>Limpieza (3): solo ve su panel especializado (se carga automáticamente)</li>
+     *   <li>Mantenimiento (4): solo ve su panel especializado (se carga automáticamente)</li>
+     * </ul>
      */
-    private boolean esAdmin() {
-        if (usuarioActual == null || usuarioActual.getRol() == null) return false;
-        // Criterio robusto: rol ID 1 = administrador
-        return usuarioActual.getRol().getIdRol() == 1;
-    }
-
-    private boolean esRecepcionista() {
-        if (usuarioActual == null || usuarioActual.getRol() == null) return false;
-        // Criterio robusto: rol ID 2 = recepcionista
-        return usuarioActual.getRol().getIdRol() == 2;
-    }
-
     private void aplicarPrivilegiosPorRol() {
-        boolean admin = esAdmin();
-        boolean recep = esRecepcionista();
-        // Solo admin ve Reportes
-        if (btnReportes != null) { btnReportes.setVisible(admin); btnReportes.setManaged(admin); }
-        // Admin y Recepcionista ven Pagos
-        if (btnPagos    != null) {
-            boolean accesoPagos = admin || recep;
-            btnPagos.setVisible(accesoPagos);
-            btnPagos.setManaged(accesoPagos);
+        boolean admin  = esAdmin();
+        boolean recep  = esRecepcionista();
+        boolean limp   = esLimpieza();
+        boolean manto  = esMantenimiento();
+
+        // Configurar visibilidad de cada botón
+        setVisible(btnClientes,      admin || recep);
+        setVisible(btnHabitaciones,  admin || recep);
+        setVisible(btnReservaciones, admin || recep);
+        setVisible(btnPagos,         admin || recep);
+        setVisible(btnEmpleados,     admin);
+        setVisible(btnServicios,     admin);
+        setVisible(btnConsumos,      admin || recep);
+        setVisible(btnReportes,      admin);
+
+        // Para limpieza y mantenimiento: cargar su vista especializada de inmediato
+        if (limp || manto) {
+            irLimpiezaMantenimiento();
         }
+    }
+
+    private void setVisible(Button btn, boolean visible) {
+        if (btn != null) { btn.setVisible(visible); btn.setManaged(visible); }
     }
 
     // ─── Navegación ──────────────────────────────────────────────────────────
@@ -144,21 +168,48 @@ public class DashboardController implements Initializable {
         cargarGraficas();
     }
 
-    @FXML public void irClientes()      { cargarVista("/fxml/Huespedes.fxml");     }
-    @FXML public void irHabitaciones()  { cargarVista("/fxml/Habitaciones.fxml");  }
-    @FXML public void irReservaciones() { cargarVista("/fxml/Reservaciones.fxml"); }
-    @FXML public void irReportes()      { cargarVista("/fxml/Reportes.fxml");      }
-    @FXML public void irPagos()         { cargarVista("/fxml/Pagos.fxml");         }
+    @FXML public void irClientes()      { cargarVista("/fxml/Huespedes.fxml");              }
+    @FXML public void irHabitaciones()  { cargarVista("/fxml/Habitaciones.fxml");            }
+    @FXML public void irReservaciones() { cargarVista("/fxml/Reservaciones.fxml");           }
+    @FXML public void irReportes()      { cargarVista("/fxml/Reportes.fxml");                }
+    @FXML public void irPagos()         { cargarVista("/fxml/Pagos.fxml");                   }
+    @FXML public void irEmpleados()     { cargarVista("/fxml/Empleados.fxml");               }
+    @FXML public void irServicios()     { cargarVista("/fxml/Servicios.fxml");               }
+    @FXML public void irConsumos()      { cargarVista("/fxml/Consumos.fxml");                }
+    @FXML public void irLimpiezaMantenimiento() { cargarVista("/fxml/LimpiezaMantenimiento.fxml"); }
+
+    /**
+     * Cierra la sesión actual y regresa a la pantalla de Login.
+     */
+    @FXML
+    public void cerrarSesion() {
+        try {
+            // Obtener el Stage actual desde cualquier nodo del contenido central
+            Stage stageActual = (Stage) contenidoCentral.getScene().getWindow();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+            Scene sceneLogin = new Scene(loader.load(), 400, 500);
+            sceneLogin.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
+            stageActual.setScene(sceneLogin);
+            stageActual.setTitle("Hotel - Inicio de Sesión");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void cargarVista(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Node content = loader.load();
             Object ctrl = loader.getController();
-            // Propagar usuario a las vistas que lo necesiten
-            if (ctrl instanceof HabitacionController hc) hc.setUsuario(usuarioActual);
-            else if (ctrl instanceof ReporteController rc)  rc.setUsuario(usuarioActual);
-            else if (ctrl instanceof PagoController    pc)  pc.setUsuario(usuarioActual);
+            // Propagar usuario a todas las vistas que lo necesiten
+            if      (ctrl instanceof HabitacionController hc)             hc.setUsuario(usuarioActual);
+            else if (ctrl instanceof ReporteController rc)                 rc.setUsuario(usuarioActual);
+            else if (ctrl instanceof PagoController pc)                    pc.setUsuario(usuarioActual);
+            else if (ctrl instanceof EmpleadoController ec)               ec.setUsuario(usuarioActual);
+            else if (ctrl instanceof ServicioController sc)               {} // sin usuario
+            else if (ctrl instanceof LimpiezaMantenimientoController lmc) lmc.setUsuario(usuarioActual);
             contenidoCentral.getChildren().setAll(content);
         } catch (Exception e) {
             e.printStackTrace();
